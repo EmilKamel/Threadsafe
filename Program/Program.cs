@@ -14,30 +14,44 @@ namespace Program
 
     class Model
     {
-        static readonly object ClassLockObject = new object();
+        private static readonly object ClassLockObject = new object();
 
-        static int classvar
+        private static int _classVar;
+        static int ClassVar
         {
-            get { return classvar; }
+            get
+            {
+                lock (ClassLockObject)
+                {
+                    return _classVar;
+                }
+            }
             set
             {
                 lock (ClassLockObject)
                 {
-                    classvar = value;
+                    _classVar = value;
                 }
             }
         }
 
-        readonly object InstanceLockObject = new object();
+        private readonly object InstanceLockObject = new object();
 
-        int instanceVar
+        private int _instanceVar;
+        int InstanceVar
         {
-            get { return instanceVar;}
+            get
+            {
+                lock (InstanceLockObject)
+                {
+                    return _instanceVar;
+                }
+            }
             set
             {
                 lock (InstanceLockObject)
                 {
-                    instanceVar = value;
+                    _instanceVar = value;
                 }
             }
         }
